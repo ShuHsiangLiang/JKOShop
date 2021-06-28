@@ -1,0 +1,81 @@
+@startuml
+
+User "1" o-- "0..n" Listing
+Category "1" *-- "0..n" Listing
+package "User Service" {
+UserOperation --> User
+UserOperation --> UserMessage
+UserOperation --> VerifyID
+}
+ListingOperation --> Listing
+ListingOperation --> ListingMessage
+Category --> CategoryMessage
+
+UserMessage ..|> Message
+ListingMessage ..|> Message
+CategoryMessage ..|> Message
+
+
+class User {
+    +id: Interger
+    +name: String
+}
+
+class Listing {
+    +id: Interger
+    +title: String
+    +description: String
+    +price: Interger
+    +username: String
+    +createtime: Date
+}
+
+class Category {
+    +id: Interger
+    +name: String
+    -list: Object
+    +getCategory(): Message
+    +getTopCategory(): Message
+}
+
+class VerifyID {
+    -doCaseInsensitive(name: String): String
+    -isExisted(name: String): Bool
+}
+
+class UserOperation {
+    +Register(username: String): Message
+}
+
+class ListingOperation {
+    +createListing(): Message
+    +deleteListing(): Message
+    +getListing(): Message
+}
+
+interface Message {
+    +Success()
+    +Error()
+}
+
+class UserMessage {
+    -Success()
+    -Error()
+}
+
+class ListingMessage {
+    -Success()
+    -Error()
+}
+
+class CategoryMessage {
+    -Success()
+    -Error()
+}
+
+
+enum Status {
+
+}
+
+@enduml
