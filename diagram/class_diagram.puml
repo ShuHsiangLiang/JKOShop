@@ -3,17 +3,19 @@
 User "1" o-- "0..n" Listing
 Category "1" *-- "0..n" Listing
 package "User Service" {
-UserOperation --> User
-UserOperation --> UserMessage
-UserOperation --> VerifyID
+UserService --> User
+UserService --> UserMessage
+UserService --> VerifyID
 }
-ListingOperation --> Listing
-ListingOperation --> ListingMessage
-Category --> CategoryMessage
+
+package "Product Service" {
+ProductService --> Listing
+ProductService --> Category
+ProductService --> ProductMessage
+}
 
 UserMessage ..|> Message
-ListingMessage ..|> Message
-CategoryMessage ..|> Message
+ProductMessage ..|> Message
 
 
 class User {
@@ -34,8 +36,6 @@ class Category {
     +id: Interger
     +name: String
     -list: Object
-    +getCategory(): Message
-    +getTopCategory(): Message
 }
 
 class VerifyID {
@@ -43,14 +43,16 @@ class VerifyID {
     -isExisted(name: String): Bool
 }
 
-class UserOperation {
+class UserService {
     +Register(username: String): Message
 }
 
-class ListingOperation {
+class ProductService {
     +createListing(): Message
     +deleteListing(): Message
     +getListing(): Message
+    +getCategory(): Message
+    +getTopCategory(): Message
 }
 
 interface Message {
@@ -63,12 +65,7 @@ class UserMessage {
     -Error()
 }
 
-class ListingMessage {
-    -Success()
-    -Error()
-}
-
-class CategoryMessage {
+class ProductMessage {
     -Success()
     -Error()
 }
